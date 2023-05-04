@@ -3,7 +3,7 @@
 	"displayName": "@signageos/vscode-sops",
 	"description": "",
 	"publisher": "signageos",
-	"version": "0.8.0",
+	"version": "0.8.1",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/signageos/vscode-sops"
@@ -123,6 +123,7 @@
 		"@types/yaml": "1.2.0",
 		"@typescript-eslint/eslint-plugin": "^2.18.0",
 		"@typescript-eslint/parser": "^2.18.0",
+		"@vscode/vsce": "^2.19.0",
 		"eslint": "^6.8.0",
 		"glob": "^7.1.6",
 		"mocha": "^7.2.0",
