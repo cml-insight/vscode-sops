@@ -373,7 +373,8 @@ async function getDecryptedFileContent(uri: vscode.Uri, fileFormat: IFileFormat)
   const encryptedContent = await getFileContent(uri);
 
   const tmpFileId = await getChecksum(Math.random().toString());
-  const tmpEncryptedFilePath = path.join(os.tmpdir(), `${tmpFileId}.${fileFormat}`);
+  const tmpEncryptedFilePath = path.join(os.tmpdir(), `${tmpFileId}`, `${uri.fsPath}`);
+  // const tmpEncryptedFilePath = path.join(os.tmpdir(), `${tmpFileId}.${fileFormat}`);
 
   try {
     const sopsConfigUri = await findSopsConfigRecursive(uri);
@@ -385,7 +386,9 @@ async function getDecryptedFileContent(uri: vscode.Uri, fileFormat: IFileFormat)
       sopsConfigArgs = ["--config", sopsConfigUri.fsPath];
     }
 
-    await fs.writeFile(tmpEncryptedFilePath, encryptedContent, { mode: 0o600 });
+    // create whole directory so that sops config can get a match
+    await fs.outputFile(tmpEncryptedFilePath, encryptedContent, { mode: 0o600 });
+    // await fs.writeFile(tmpEncryptedFilePath, encryptedContent, { mode: 0o600 });
 
     debug("Decrypting", uri.path, encryptedContent);
     const { sopsGeneralArgs, sopsGeneralEnvVars } = await getSopsGeneralOptions();
@@ -426,10 +429,13 @@ async function getDecryptedFileContent(uri: vscode.Uri, fileFormat: IFileFormat)
 async function getEncryptedFileContent(uri: vscode.Uri, originalEncryptedUri: vscode.Uri, fileFormat: IFileFormat) {
   const decryptedContent = await getFileContent(uri);
   const originalEncryptedContent = await getFileContent(originalEncryptedUri);
-  const tmpDecryptedFilePath = path.join(os.tmpdir(), await getChecksum(Math.random().toString()));
 
-  const tmpFileId = await getChecksum(Math.random().toString());
-  const tmpEncryptedFilePath = path.join(os.tmpdir(), `${tmpFileId}.${fileFormat}`);
+  const tmpDecryptedFileId = await getChecksum(Math.random().toString());
+  const tmpDecryptedFilePath = path.join(os.tmpdir(), `${tmpDecryptedFileId}`, `${uri.fsPath}`);
+
+  const tmpEncryptedFileId = await getChecksum(Math.random().toString());
+  const tmpEncryptedFilePath = path.join(os.tmpdir(), `${tmpEncryptedFileId}`, `${uri.fsPath}`);
+  // const tmpEncryptedFilePath = path.join(os.tmpdir(), `${tmpFileId}.${fileFormat}`);
 
   let tmpFakeDecryptedEditorPath = path.join(os.tmpdir(), await getChecksum(Math.random().toString()));
   let fakeDecryptedEditor = FAKE_DECRYPTED_EDITOR_SHELL;
@@ -451,8 +457,12 @@ async function getEncryptedFileContent(uri: vscode.Uri, originalEncryptedUri: vs
     }
 
     await fs.writeFile(tmpFakeDecryptedEditorPath, fakeDecryptedEditor, { mode: 0o755 });
-    await fs.writeFile(tmpDecryptedFilePath, decryptedContent, { mode: 0o600 });
-    await fs.writeFile(tmpEncryptedFilePath, originalEncryptedContent, { mode: 0o600 });
+
+    await fs.outputFile(tmpDecryptedFilePath, decryptedContent, { mode: 0o600 });
+    // await fs.writeFile(tmpDecryptedFilePath, decryptedContent, { mode: 0o600 });
+
+    await fs.outputFile(tmpEncryptedFilePath, originalEncryptedContent, { mode: 0o600 });
+    // await fs.writeFile(tmpEncryptedFilePath, originalEncryptedContent, { mode: 0o600 });
 
     debug("Encrypting", uri.path, decryptedContent);
 

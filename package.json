@@ -3,7 +3,7 @@
   "displayName": "@signageos/vscode-sops",
   "description": "",
   "publisher": "signageos",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/signageos/vscode-sops"
@@ -101,7 +101,7 @@
     ]
   },
   "scripts": {
-    "vscode:prepublish": "npm run esbuild-base -- --minify",    
+    "vscode:prepublish": "npm run esbuild-base -- --minify",
     "esbuild-base": "rimraf out && esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node",
     "build": "npm run -S esbuild-base -- --sourcemap",
     "vscode:package": "vsce package",

@@ -1,6 +1,7 @@
 # VSCode SOPS extension
 
 ## Info
+
 The homepage of VSCode extension is located on https://github.com/signageos/vscode-sops
 
 Extension for VSCode is available on market place https://marketplace.visualstudio.com/items?itemName=signageos.signageos-vscode-sops
@@ -9,6 +10,7 @@ Additionally, it's available on Open VSX market place https://open-vsx.org/exten
 ## Features
 
 VSCode extension with underlying [SOPS](https://github.com/mozilla/sops) supports:
+
 - Realtime editing of encrypted `yaml`, `json`, `dotenv`, `plaintext`, `binary` and `ini` files in-place in your project.
 - Create new encrypted yaml/json file using `.sops.yaml` config creation_rules if available.
 
@@ -16,23 +18,26 @@ VSCode extension with underlying [SOPS](https://github.com/mozilla/sops) support
 
 - Download and install SOPS from here: https://github.com/mozilla/sops/releases
 
-*Make sure that `sops` is available in $PATH environment variable*
+_Make sure that `sops` is available in $PATH environment variable_
 
 - Tutorial to SOPS: https://www.youtube.com/watch?v=V2PRhxphH2w
-- *(optional)* For dotenv support install https://marketplace.visualstudio.com/items?itemName=mikestead.dotenv extension first
+- _(optional)_ For dotenv support install https://marketplace.visualstudio.com/items?itemName=mikestead.dotenv extension first
 
 ## Extension Settings
-* `sops.enable`: enable/disable this extension (default: true)
-* `sops.beta`: enable/disable beta release without reloading VSCode or enabling/disabling extensions (default: false)
-* `sops.binPath`: Path to SOPS binary (default: executables from `$PATH`)
-* `sops.configPath`: Path (absolute or relative) to the configuration for this extension (empty: defaults to `.sopsrc` in root of project) See [Config file](#config-file) section.
-* `sops.defaults.awsProfile`: Default AWS profile name which will be used for sops command `--aws-profile` (empty: defaults to environment variable `$AWS_PROFILE`)
-* `sops.defaults.gcpCredentialsPath`: Default path used to find GCP credentials. Overrides the `$GOOGLE_APPLICATION_CREDENTIALS` environment variable (empty: defaults to environment variable `$GOOGLE_APPLICATION_CREDENTIALS`)
-* `sops.defaults.ageKeyFile`: Default path used to find AGE key file. Overwrites the `$SOPS_AGE_KEY_FILE` environment variable (default: uses from environment variable `$SOPS_AGE_KEY_FILE`)
-* `sops.creationEnabled`: enable/disable this extension to try encrypt files included in .sops.yaml path_regex when is not encrypted yet (default: false)
+
+- `sops.enable`: enable/disable this extension (default: true)
+- `sops.beta`: enable/disable beta release without reloading VSCode or enabling/disabling extensions (default: false)
+- `sops.binPath`: Path to SOPS binary (default: executables from `$PATH`)
+- `sops.configPath`: Path (absolute or relative) to the configuration for this extension (empty: defaults to `.sopsrc` in root of project) See [Config file](#config-file) section.
+- `sops.defaults.awsProfile`: Default AWS profile name which will be used for sops command `--aws-profile` (empty: defaults to environment variable `$AWS_PROFILE`)
+- `sops.defaults.gcpCredentialsPath`: Default path used to find GCP credentials. Overrides the `$GOOGLE_APPLICATION_CREDENTIALS` environment variable (empty: defaults to environment variable `$GOOGLE_APPLICATION_CREDENTIALS`)
+- `sops.defaults.ageKeyFile`: Default path used to find AGE key file. Overwrites the `$SOPS_AGE_KEY_FILE` environment variable (default: uses from environment variable `$SOPS_AGE_KEY_FILE`)
+- `sops.creationEnabled`: enable/disable this extension to try encrypt files included in .sops.yaml path_regex when is not encrypted yet (default: false)
 
 ## Config file
+
 > Named `.sopsrc` in project root by default and is in YAML format.
+
 ```yaml
 awsProfile: my-profile-1
 gcpCredentialsPath: /home/user/Downloads/my-key.json
@@ -40,6 +45,7 @@ ageKeyFile: /home/user/age.txt
 ```
 
 ## Beta releases
+
 The new features are published immediately into different extension package https://marketplace.visualstudio.com/items?itemName=signageos.signageos-vscode-sops-beta
 
 The beta extension package is installed automatically and is disabled by default.
@@ -53,23 +59,62 @@ I recommend to have enabled beta release to test everything as soon as possible.
 > The reason is that vscode doesn't support beta releases built-in. See and vote for https://github.com/microsoft/vscode/issues/15756
 
 ## SOPS differ
+
 Optionally, you can add following file `.gitattributes` into your project
+
 ```
 encrypted/*.{yaml,json,ini,env} diff=sopsdiffer
 ```
+
 and run following command for global git settings
+
 ```sh
 git config --global diff.sopsdiffer.textconv "sops -d --config /dev/null"
 ```
+
 to see the git diff in decrypted format.
 
+## Developer
+
+### Package Extention
+
+1. Install Required nodejs version
+
+```sh
+nvm install lts/hydrogen
+```
+
+2. Update version in `package.json`
+
+3. Package
+
+```sh
+yarn vscode:prepublish
+yarn vscode:package
+```
+
+### Manage Extension
+
+1. Install
+
+```sh
+code --install-extension <extension-name>
+```
+
+2. Uninstall
+
+```sh
+code --uninstall-extension <extention-name>
+```
+
 ## Known Issues
+
 See https://github.com/signageos/vscode-sops/issues
 
 ## Release Notes
 
 See https://github.com/signageos/vscode-sops/blob/master/CHANGELOG.md file.
 
------------------------------------------------------------------------------------------------------------
+---
 
 **Enjoy!**
