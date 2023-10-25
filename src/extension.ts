@@ -7,7 +7,7 @@ import * as INI from "ini";
 import * as DotEnv from "./dotenv";
 import * as path from "path";
 import * as crypto from "crypto";
-import * as minimatch from "minimatch";
+import {minimatch} from "minimatch";
 import Debug from "debug";
 import { TextEncoder, TextDecoder } from "text-encoding";
 
